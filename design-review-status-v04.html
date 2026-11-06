@@ -1,0 +1,404 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>八沢スキー場｜架空施設のWebデザイン作品</title>
+  <meta name="description" content="架空の八沢スキー場を題材にしたWebデザイン作品。コースや施設、アクセスを紹介します。">
+  <link rel="stylesheet" href="style.css?v=14">
+  <script src="slides.js?v=6" defer></script>
+  <script src="languages-status-v03.js?v=1" defer></script>
+  <script src="status-demo-v02.js?v=1" defer></script>
+<style>
+#slopes .course-gallery, #juhyo .course-gallery, #skyline .course-gallery, #extreme .course-gallery { grid-template-columns: repeat(2,minmax(0,1fr)); }
+#slopes .shira-card, #juhyo .shira-card, #skyline .shira-card, #extreme .shira-card { margin:0; min-width:0; scroll-snap-align:start; }
+#slopes .shira-card figcaption, #juhyo .shira-card figcaption, #skyline .shira-card figcaption, #extreme .shira-card figcaption { padding:12px 2px 0; color:#31536b; font-size:.9rem; line-height:1.6; }
+@media (max-width:700px) { #slopes .course-gallery, #juhyo .course-gallery, #skyline .course-gallery, #extreme .course-gallery { grid-template-columns:none; } #slopes .course-gallery img, #juhyo .course-gallery img, #skyline .course-gallery img, #extreme .course-gallery img { scroll-snap-align:none; } }
+ .course-image-note { max-width: 100%; margin: 0; padding: 0; color: #31536b; font-size: .875rem; line-height: 1.6; }
+#slopes .course-copy h2 { margin-bottom: .64em; }
+#slopes .zoom-photo { overflow: hidden; aspect-ratio: 4 / 3; }
+#slopes .zoom-photo img { width:100%; height:100%; object-fit:cover; transform:scale(1.6); transform-origin:72% 65%; }
+#first-visit > h2 { margin-bottom: .55em; }
+#first-visit .first-steps { margin-top: 28px; }
+#prices > h2 { margin-bottom: .55em; }
+#prices > .price-section:first-of-type { margin-top: 28px; }
+#prices > .price-section:first-of-type > h3 { margin-top: 0; }
+
+/* Full design review: comparison build only. */
+.hero::after { background: linear-gradient(90deg, rgba(239,247,252,.88) 0%, rgba(239,247,252,.66) 30%, rgba(239,247,252,.04) 78%); }
+.intro .hero-tagline { font-size: clamp(1rem, 2vw, 1.25rem); line-height: 1.8; font-weight: 600; }
+.hero-course-link { display: inline-flex; align-items: center; min-height: 44px; margin-top: 10px; padding: 10px 18px; border: 1px solid #173f58; border-radius: 4px; background: rgba(248,250,251,.91); color: #102d4b; font-weight: 700; text-decoration: none; }
+.hero-course-link:hover { background: #fff; text-decoration: underline; }
+.hero-course-link:focus-visible { outline: 3px solid #315e80; outline-offset: 3px; }
+.status-guide { padding-top: clamp(42px, 5vw, 68px); }
+.status-guide h2 { font-size: clamp(1.7rem, 2.5vw, 2.2rem); margin: .25em 0 .45em; }
+.status-guide .guide-note { margin: .5em 0; }
+.status-hours { margin: .6em 0; font-weight: 700; }
+.status-guide .status-grid { margin-top: 18px; }
+.course-copy h2 { margin-bottom: .55em; }
+.course-level { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; }
+.course-level span:last-child { letter-spacing: .02em; padding: 2px 8px; border: 1px solid #9db0be; border-radius: 3px; }
+.facilities, .access, .info { padding-top: clamp(48px, 6vw, 80px); }
+.access h2 { font-size: clamp(1.7rem, 2.5vw, 2.2rem); margin-bottom: .5em; }
+.access-grid { margin-top: 28px; }
+.access-grid h3 { margin: .4em 0 .5em; }
+.access-grid p { margin: .6em 0; }
+.price-table caption { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
+.note a, .note a:visited { color: #315e80; text-decoration: underline; }
+.note a:hover { color: #102d4b; }
+.note a:focus-visible { outline: 3px solid #315e80; outline-offset: 3px; }
+@media (min-width: 701px) { .first-steps li { position: relative; padding-bottom: 54px; } .first-steps li a { position: absolute; left: 0; bottom: 0; } }
+@media (max-width: 600px) { .hero::after { background: linear-gradient(90deg, rgba(239,247,252,.9), rgba(239,247,252,.55) 56%, rgba(239,247,252,.12)); } }
+
+.shuttle-times { margin: 16px 0; border-top: 1px solid #c6d8e2; }
+.shuttle-times div { display: grid; grid-template-columns: 7.5em 1fr; gap: 8px; border-bottom: 1px solid #c6d8e2; padding: 9px 0; }
+.shuttle-times dt { color: #45647b; font-weight: 600; }
+.shuttle-times dd { margin: 0; font-weight: 700; font-variant-numeric: tabular-nums; }
+.access-benefit { font-weight: 700; }
+@media (max-width: 380px) { .shuttle-times div { grid-template-columns: 1fr; gap: 0; } }
+/* Independent screen review: keep hints and link styling appropriate to context. */
+.map-scroll-hint { display: none; }
+@media (max-width: 947px) { .map-scroll-hint { display: block; } }
+.info a, .info a:visited { color: #315e80; text-decoration: underline; }
+.info a:hover { color: #102d4b; }
+.info a:focus-visible { outline: 3px solid #315e80; outline-offset: 3px; }
+.access-grid p { text-wrap: pretty; }
+/* v06: redistribute spacing without changing the established design. */
+#first-visit { padding-bottom: 8px; }
+#prices { padding-top: clamp(40px, 5vw, 64px); }
+#first-visit .first-steps li p { margin: 10px 0; text-wrap: pretty; }
+@media (min-width: 701px) { #first-visit .first-steps li { padding-bottom: 42px; } }
+.facilities-grid { row-gap: 56px; }
+.facility-card h3 { margin: 20px 0 14px; }
+.facility-card p + p { margin-top: 10px; }
+.facility-card a, .facility-card a:visited { color: #315e80; }
+.facility-card a:focus-visible { outline: 3px solid #315e80; outline-offset: 3px; }
+@media (max-width: 700px) { .facilities-grid { row-gap: 44px; } }
+.access { padding-bottom: 8px; }
+.access > .course-label { margin-bottom: .4em; }
+.access > h2 { margin-top: .15em; margin-bottom: .35em; }
+.access > p:not(.course-label) { margin: .4em 0; }
+.access-grid { margin-top: 18px; }
+.info { padding-top: clamp(36px, 4vw, 52px); }
+/* Course-photo size comparison: keep both images and existing swipe indicators. */
+.course { max-width: 1440px; }
+@media (max-width: 700px) {
+  .course { padding-left: 16px; padding-right: 16px; }
+  #slopes .course-gallery, #juhyo .course-gallery, #skyline .course-gallery, #extreme .course-gallery { grid-auto-columns: 92%; gap: 10px; }
+}
+/* Preserve the approved photo layout while improving narrow-screen wrapping. */
+.course-copy p, .facility-card p { text-wrap: pretty; }
+.hero::after { background: linear-gradient(90deg, rgba(239,247,252,.83) 0%, rgba(239,247,252,.53) 30%, rgba(239,247,252,.02) 72%); }
+@media (max-width: 600px) { .hero::after { background: linear-gradient(90deg, rgba(239,247,252,.86), rgba(239,247,252,.48) 56%, rgba(239,247,252,.08)); } }
+.hero:has(.slide[src*="03-frost"]:not([hidden]))::after { background: linear-gradient(90deg, rgba(239,247,252,.64), rgba(239,247,252,.36) 30%, rgba(239,247,252,.02) 72%); }
+@media (max-width: 600px) { .hero:has(.slide[src*="03-frost"]:not([hidden]))::after { background: linear-gradient(90deg, rgba(239,247,252,.72), rgba(239,247,252,.34) 56%, rgba(239,247,252,.06)); } }
+
+/* A restrained, local-only operating-status comparison. */
+.sample-note { color:#31536b; font-size:.95rem; }
+.sample-controls { margin:20px 0; }
+.sample-controls label { display:block; font-weight:700; margin-bottom:6px; }
+.sample-controls select { min-height:44px; width:min(100%, 360px); padding:8px 12px; color:#173649; background:#fff; border:1px solid #819cab; border-radius:4px; font:inherit; }
+.sample-controls select:focus-visible { outline:3px solid #315e80; outline-offset:3px; }
+.report-meta { display:flex; flex-wrap:wrap; gap:8px 25px; color:#31536b; font-size:.94rem; }
+.report-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:1px; background:#c6d8e2; border:1px solid #c6d8e2; margin:20px 0; }
+.report-grid div { background:#f7fafb; padding:15px 18px; }
+.report-grid dt { color:#31536b; font-size:.9rem; }
+.report-grid dd { margin:4px 0 0; font-weight:700; font-size:1.15rem; }
+.report-columns { display:grid; grid-template-columns:1fr 1fr; gap:32px; }
+.report-columns h3 { font-size:1.08rem; margin:0 0 8px; }
+.report-list { padding:0; margin:0; list-style:none; border-top:1px solid #c6d8e2; }
+.report-list li { display:flex; align-items:baseline; justify-content:space-between; gap:12px; padding:10px 0; border-bottom:1px solid #c6d8e2; }
+.report-list strong { flex:none; color:#216548; font-size:.9rem; }
+.report-list strong.stopped { color:#953c2b; }
+.report-notice { margin:22px 0 0; padding:14px 16px; border-left:3px solid #7193a4; background:#f0f6f8; }
+.report-notice strong { display:block; margin-bottom:4px; }
+@media(max-width:700px) { .report-grid { grid-template-columns:repeat(3,minmax(0,1fr)); } .report-grid div { padding:12px 9px; } .report-grid dd { font-size:1rem; overflow-wrap:anywhere; } .report-columns { grid-template-columns:1fr; gap:24px; } }
+
+
+/* Status v02: retain the approved layout while making exceptions visible earlier. */
+.status-guide .report-notice { margin: 12px 0 0; }
+.report-map-link { margin: 14px 0 0; }
+.report-map-link a, .report-map-link a:visited { color:#315e80; text-decoration:underline; }
+.report-map-link a:focus-visible { outline:3px solid #315e80; outline-offset:3px; }
+@media (max-width: 360px) {
+  .report-columns section:nth-child(2) .report-list li { display:block; }
+  .report-columns section:nth-child(2) .report-list li span, .report-columns section:nth-child(2) .report-list li strong { display:block; }
+  .report-columns section:nth-child(2) .report-list li strong { margin-top:3px; }
+}
+</style>
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="#top">八沢スキー場</a>
+    <button type="button" class="menu-toggle" aria-expanded="false" aria-controls="site-menu" hidden>☰ <span>メニュー</span></button>
+    <nav id="site-menu" aria-label="メインメニュー">
+      <a href="#slopes">ゲレンデ案内</a>
+      <a href="#course-map">コースマップ</a>
+      <a href="#first-visit">初めての方へ</a>
+      <a href="#prices">料金</a>
+      <a href="#facilities">施設</a>
+      <a href="#access">アクセス</a>
+      <label class="language-picker" hidden> <span>言語 / Language</span>
+        <select id="language" aria-label="言語 / Language">
+          <option value="ja" lang="ja">日本語</option><option value="en" lang="en">English</option><option value="zh-Hans" lang="zh-Hans">简体中文</option><option value="ko" lang="ko">한국어</option>
+        </select>
+      </label>
+    </nav>
+  </header>
+  <main id="top">
+    <section class="hero" aria-label="八沢の風景">
+      <div class="photos">
+        <img class="slide" src="images/web/01-mountain-1600.webp" srcset="images/web/01-mountain-960.webp 960w, images/web/01-mountain-1600.webp 1600w" sizes="100vw" alt="雪山と広いゲレンデ">
+        <img class="slide" src="images/web/02-ski-1600.webp" srcset="images/web/02-ski-960.webp 960w, images/web/02-ski-1600.webp 1600w" sizes="100vw" alt="雪山を背景に滑るスキーヤー" hidden>
+        <img class="slide" src="images/web/03-frost-1600.webp" srcset="images/web/03-frost-960.webp 960w, images/web/03-frost-1600.webp 1600w" sizes="100vw" alt="雪と氷に覆われた樹氷の森" hidden>
+        <img class="slide" src="images/web/04-lake-1600.webp" srcset="images/web/04-lake-960.webp 960w, images/web/04-lake-1600.webp 1600w" sizes="100vw" alt="雪山と木々を映す湖" hidden>
+        <img class="slide" src="images/web/05-evening-1600.webp" srcset="images/web/05-evening-960.webp 960w, images/web/05-evening-1600.webp 1600w" sizes="100vw" alt="夕日に染まる雪山とゲレンデ" hidden>
+      </div>
+      <div class="intro">
+        <p class="eyebrow">YASAWA · SKI RESORT</p>
+        <p class="fiction-label">架空施設のWebデザイン作品</p>
+        <h1>八沢スキー場</h1>
+        <p class="hero-tagline">樹氷の森を抜けて、八沢の絶景へ。</p>
+        <a class="hero-course-link" href="#slopes">4つのコースを見る</a>
+      </div>
+      <button class="hero-pause" type="button" id="toggle" hidden>一時停止</button>
+    </section>
+    <section class="resort-guide status-guide" id="sample-report" aria-labelledby="status-title">
+      <p class="course-label">SNOW REPORT</p>
+      <h2 id="status-title">営業情報</h2>
+      <p class="guide-note sample-note">※ 架空の表示例です。実際の情報ではなく、自動更新されません。</p>
+      <p class="status-hours">営業時間（架空）：8:30〜16:30</p>
+      <div class="report-meta"><span>更新時刻（架空の例）：8:00</span></div>
+      <div class="sample-controls" hidden><label for="report-scenario">表示例を切り替える</label><select id="report-scenario"><option value="normal">通常の例</option><option value="wind">強風の例</option><option value="busy">混雑の例</option></select></div>
+      <p class="report-notice"><strong>お知らせ（表示例）</strong><span id="report-message">すべてのリフト・コースが利用できる例です。</span></p>
+      <p class="report-map-link"><a href="#course-map">地図でリフトの位置を見る →</a></p>
+      <dl class="report-grid"><div><dt>天気</dt><dd id="report-weather">晴れ</dd></div><div><dt>積雪</dt><dd>120 cm</dd></div><div><dt>駐車場</dt><dd id="report-parking">空きあり</dd></div></dl>
+      <div class="report-columns">
+        <section><h3>リフト</h3><ul class="report-list"><li><span>L1</span><strong id="lift-1">運行中</strong></li><li><span>L2</span><strong id="lift-2">運行中</strong></li><li><span>L3</span><strong id="lift-3">運行中</strong></li></ul></section>
+        <section><h3>コース</h3><ul class="report-list"><li><span>① しらかばコース</span><strong id="course-1">滑走可</strong></li><li><span>② 樹氷パノラマコース</span><strong id="course-2">滑走可</strong></li><li><span>③ 八沢スカイラインコース</span><strong id="course-3">滑走可</strong></li><li><span>④ 八沢エクストリームコース</span><strong id="course-4">滑走可</strong></li></ul></section>
+      </div>
+    </section>
+    <section class="resort-guide" id="course-map" aria-labelledby="map-title">
+      <p class="course-label">COURSE MAP</p>
+      <h2 id="map-title">ゲレンデマップ</h2>
+      <p>八沢の4つのコースをご紹介します。</p>
+      <p class="guide-note">地図には運行・滑走状況は反映されません。上の営業情報をご確認ください。</p>
+      <p class="guide-note">※ 架空のスキー場の配置イメージです。縮尺や実際の滑走可能な地形は示していません。</p>
+      <div class="map-key" aria-label="地図の凡例"><span><i class="map-key-lift" aria-hidden="true"></i> リフト（上り）</span><span><i class="map-key-course" aria-hidden="true"></i> コース（下り）</span><span><i class="map-key-return" aria-hidden="true"></i> 山麓連絡路</span></div>
+      <div class="map-overview"><p>全体図（位置関係の目安）</p>
+        <div class="map-visual map-overview-visual" aria-hidden="true">
+          <img src="images/web/course-map-lifts-v01-q90.webp" width="1536" height="1024" alt="" loading="lazy">
+          <svg class="map-routes" viewBox="0 0 1000 667" aria-hidden="true" focusable="false">
+          <defs><mask id="overview-lift-cross-gap" maskUnits="userSpaceOnUse" x="0" y="0" width="1000" height="667"><rect width="1000" height="667" fill="white"/><circle cx="287.21" cy="243.35" r="16" fill="black"/></mask><marker id="overview-arr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="3" markerHeight="3" orient="auto"><path d="M0 0L10 5L0 10Z" fill="context-stroke"/></marker></defs>
+          <!-- White outlines keep routes legible on snow. -->
+          <g fill="none" stroke="#fff" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"><path d="M240 475 L108 309"/><path d="M108 309 L384 117"/><path d="M108 309 L684 98" mask="url(#overview-lift-cross-gap)"/><path d="M108 309 C160 365 235 430 300 480 C340 510 365 535 390 550"/><path d="M384 117 C410 140 425 152 400 165 C375 180 330 185 305 210 C280 240 295 250 265 275 C240 295 205 310 108 309"/><path d="M684 98 C647 145 563 178 505 210 C460 235 440 268 435 300 C425 345 440 385 470 420 C500 465 530 515 560 560"/><path d="M684 98 C720 115 775 135 810 160 C835 185 840 220 845 260 C880 310 885 360 880 405 C875 455 865 510 840 550"/><path d="M840 550 C740 565 555 575 390 550 C310 540 270 515 240 475"/></g>
+          <g fill="none" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#overview-arr)"><g stroke="#233a50" stroke-width="5" stroke-dasharray="9 8"><path d="M240 475 L108 309"/><path d="M108 309 L384 117"/><path d="M108 309 L684 98" mask="url(#overview-lift-cross-gap)"/></g><g stroke-width="6"><path d="M108 309 C160 365 235 430 300 480 C340 510 365 535 390 550" stroke="#28795a"/><path d="M384 117 C410 140 425 152 400 165 C375 180 330 185 305 210 C280 240 295 250 265 275 C240 295 205 310 108 309" stroke="#246997"/><path d="M684 98 C647 145 563 178 505 210 C460 235 440 268 435 300 C425 345 440 385 470 420 C500 465 530 515 560 560" stroke="#bc5933"/><path d="M684 98 C720 115 775 135 810 160 C835 185 840 220 845 260 C880 310 885 360 880 405 C875 455 865 510 840 550" stroke="#723d73"/><path d="M840 550 C740 565 555 575 390 550 C310 540 270 515 240 475" stroke="#515a64" stroke-dasharray="3 9"/></g></g>
+          <g font-family="-apple-system,BlinkMacSystemFont,sans-serif" text-anchor="middle" font-weight="700"><g fill="#fff" stroke="#1d4153" stroke-width="3"><circle cx="240" cy="475" r="12"/><circle cx="108" cy="309" r="12"/><circle cx="384" cy="117" r="12"/><circle cx="684" cy="98" r="12"/></g><g font-size="13"><g><rect x="180" y="492" width="100" height="30" rx="7" fill="#173649"/><text x="230" y="513" fill="white">ロッジ前</text></g><g><rect x="62" y="260" width="95" height="30" rx="7" fill="#173649"/><text x="109" y="281" fill="white">乗継広場</text></g><g><rect x="338" y="65" width="103" height="30" rx="7" fill="#173649"/><text x="389" y="86" fill="white">樹氷降り場</text></g><g><rect x="625" y="55" width="105" height="30" rx="7" fill="#173649"/><text x="677" y="76" fill="white">山頂側降り場</text></g><g fill="#173649"><rect x="140" y="365" width="35" height="24" rx="5"/><rect x="240" y="201" width="35" height="24" rx="5"/><rect x="400" y="183" width="35" height="24" rx="5"/></g><g fill="white"><text x="157" y="382">L1</text><text x="257" y="218">L2</text><text x="417" y="200">L3</text></g></g><g font-size="18" fill="white" stroke="white" stroke-width="3"><circle cx="267" cy="452" r="18" fill="#28795a"/><circle cx="325" cy="192" r="18" fill="#246997"/><circle cx="430" cy="320" r="18" fill="#bc5933"/><circle cx="860" cy="320" r="18" fill="#723d73"/></g><g fill="white" font-size="18"><text x="267" y="459">1</text><text x="325" y="199">2</text><text x="430" y="327">3</text><text x="860" y="327">4</text></g></g></svg>
+        </div>
+      </div>
+      <p class="map-scroll-hint">詳しい地図は左右に動かしてご覧いただけます。</p>
+      <div class="map-scroll" role="region" tabindex="0" aria-label="左右に動かせるゲレンデマップ">
+        <div class="map-visual" role="img" aria-label="架空の山に、3本のリフトと4つのコース、山麓の連絡路を示した概略図。">
+          <img src="images/web/course-map-lifts-v01-q90.webp" width="1536" height="1024" alt="" loading="lazy">
+          <svg class="map-routes" viewBox="0 0 1000 667" aria-hidden="true" focusable="false">
+          <defs><mask id="lift-cross-gap" maskUnits="userSpaceOnUse" x="0" y="0" width="1000" height="667"><rect width="1000" height="667" fill="white"/><circle cx="287.21" cy="243.35" r="16" fill="black"/></mask><marker id="arr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="3" markerHeight="3" orient="auto"><path d="M0 0L10 5L0 10Z" fill="context-stroke"/></marker></defs>
+          <!-- White outlines keep routes legible on snow. -->
+          <g fill="none" stroke="#fff" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"><path d="M240 475 L108 309"/><path d="M108 309 L384 117"/><path d="M108 309 L684 98" mask="url(#lift-cross-gap)"/><path d="M108 309 C160 365 235 430 300 480 C340 510 365 535 390 550"/><path d="M384 117 C410 140 425 152 400 165 C375 180 330 185 305 210 C280 240 295 250 265 275 C240 295 205 310 108 309"/><path d="M684 98 C647 145 563 178 505 210 C460 235 440 268 435 300 C425 345 440 385 470 420 C500 465 530 515 560 560"/><path d="M684 98 C720 115 775 135 810 160 C835 185 840 220 845 260 C880 310 885 360 880 405 C875 455 865 510 840 550"/><path d="M840 550 C740 565 555 575 390 550 C310 540 270 515 240 475"/></g>
+          <g fill="none" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arr)"><g stroke="#233a50" stroke-width="5" stroke-dasharray="9 8"><path d="M240 475 L108 309"/><path d="M108 309 L384 117"/><path d="M108 309 L684 98" mask="url(#lift-cross-gap)"/></g><g stroke-width="6"><path d="M108 309 C160 365 235 430 300 480 C340 510 365 535 390 550" stroke="#28795a"/><path d="M384 117 C410 140 425 152 400 165 C375 180 330 185 305 210 C280 240 295 250 265 275 C240 295 205 310 108 309" stroke="#246997"/><path d="M684 98 C647 145 563 178 505 210 C460 235 440 268 435 300 C425 345 440 385 470 420 C500 465 530 515 560 560" stroke="#bc5933"/><path d="M684 98 C720 115 775 135 810 160 C835 185 840 220 845 260 C880 310 885 360 880 405 C875 455 865 510 840 550" stroke="#723d73"/><path d="M840 550 C740 565 555 575 390 550 C310 540 270 515 240 475" stroke="#515a64" stroke-dasharray="3 9"/></g></g>
+          <g font-family="-apple-system,BlinkMacSystemFont,sans-serif" text-anchor="middle" font-weight="700"><g fill="#fff" stroke="#1d4153" stroke-width="3"><circle cx="240" cy="475" r="12"/><circle cx="108" cy="309" r="12"/><circle cx="384" cy="117" r="12"/><circle cx="684" cy="98" r="12"/></g><g font-size="13"><g><rect x="180" y="492" width="100" height="30" rx="7" fill="#173649"/><text x="230" y="513" fill="white">ロッジ前</text></g><g><rect x="62" y="260" width="95" height="30" rx="7" fill="#173649"/><text x="109" y="281" fill="white">乗継広場</text></g><g><rect x="338" y="65" width="103" height="30" rx="7" fill="#173649"/><text x="389" y="86" fill="white">樹氷降り場</text></g><g><rect x="625" y="55" width="105" height="30" rx="7" fill="#173649"/><text x="677" y="76" fill="white">山頂側降り場</text></g><g fill="#173649"><rect x="140" y="365" width="35" height="24" rx="5"/><rect x="240" y="201" width="35" height="24" rx="5"/><rect x="400" y="183" width="35" height="24" rx="5"/></g><g fill="white"><text x="157" y="382">L1</text><text x="257" y="218">L2</text><text x="417" y="200">L3</text></g></g><g font-size="18" fill="white" stroke="white" stroke-width="3"><circle cx="267" cy="452" r="18" fill="#28795a"/><circle cx="325" cy="192" r="18" fill="#246997"/><circle cx="430" cy="320" r="18" fill="#bc5933"/><circle cx="860" cy="320" r="18" fill="#723d73"/></g><g fill="white" font-size="18"><text x="267" y="459">1</text><text x="325" y="199">2</text><text x="430" y="327">3</text><text x="860" y="327">4</text></g></g></svg>
+        </div>
+      </div>
+      
+      <p class="guide-note">リフトの線の切れ目はコースとの交差を示し、乗り換え地点ではありません。</p>
+      <ul class="map-route-details">
+        <li>① しらかば：L1で中腹へ。滑った後は山麓連絡路でロッジへ。</li>
+        <li>② 樹氷パノラマ：L1からL2へ乗り継ぎ。①に合流しロッジへ。</li>
+        <li>③ スカイライン：L1からL3へ乗り継ぎ。滑った後は山麓連絡路でロッジへ。</li>
+        <li>④ エクストリーム：L1からL3へ乗り継ぎ。滑った後は山麓連絡路でロッジへ。</li>
+      </ul>
+      <div class="course-map-list">
+        <a href="#slopes"><span class="map-number number-one">1</span><span class="map-level level-one">初級</span><span class="course-name">しらかばコース</span><span aria-hidden="true">↓</span></a>
+        <a href="#juhyo"><span class="map-number number-two">2</span><span class="map-level level-two">中級</span><span class="course-name">樹氷パノラマコース</span><span aria-hidden="true">↓</span></a>
+        <a href="#skyline"><span class="map-number number-three">3</span><span class="map-level level-three">上級</span><span class="course-name">八沢スカイラインコース</span><span aria-hidden="true">↓</span></a>
+        <a href="#extreme"><span class="map-number number-four">4</span><span class="map-level level-four">超上級</span><span class="course-name">八沢エクストリームコース</span><span aria-hidden="true">↓</span></a>
+      </div>
+    </section>
+    <nav class="section-shortcuts" aria-label="ページ内のご案内"><span>目的の情報へ</span><a href="#course-map">ゲレンデマップ</a><a href="#prices">料金</a><a href="#access">アクセス</a></nav>
+    <section class="course" id="slopes" aria-labelledby="course-title">
+      <p class="course-image-note">写真は個別に制作したイメージで、地図と同じ地形を写したものではありません。</p>
+      <div class="course-image course-gallery" role="region" tabindex="0" aria-label="しらかばコースの写真">
+        <figure class="shira-card"><img class="course-slide" src="images/web/shirakaba-2-1600.webp" srcset="images/web/shirakaba-2-960.webp 960w, images/web/shirakaba-2-1600.webp 1600w" sizes="(max-width: 700px) 90vw, 600px" alt="白樺に囲まれたゆるやかな斜面" loading="lazy"><figcaption>白樺のゆるやかな斜面</figcaption></figure>
+        <figure class="shira-card"><div class="zoom-photo"><img class="course-slide" src="images/web/02-ski-1600.webp" srcset="images/web/02-ski-960.webp 960w, images/web/02-ski-1600.webp 1600w" sizes="(max-width: 700px) 90vw, 600px" alt="雪山を背景に広いゲレンデを滑る人たち" loading="lazy"></div><figcaption>広いゲレンデで雪を楽しむ</figcaption></figure>
+        
+      </div>
+      <div class="course-copy">
+        <p class="course-label course-level"><span>BEGINNER COURSE</span> <span>初級</span></p>
+        <h2 id="course-title">しらかばコース</h2>
+        <p>白樺に囲まれた、ゆるやかな雪の斜面。<br>はじめてのスキーにおすすめ。</p>
+        <dl class="course-facts">
+          <div><dt>長さ</dt><dd>800m</dd></div>
+          <div><dt>平均斜度</dt><dd>7度</dd></div>
+          <div><dt>雪面</dt><dd>圧雪あり</dd></div>
+          <div class="course-highlight"><dt>見どころ</dt><dd>白樺の森と、遠くに広がる八沢の山並み</dd></div>
+        </dl>
+      </div>
+    </section>
+    <section class="course course-secondary" id="juhyo" aria-labelledby="juhyo-title">
+      <div class="course-image course-gallery" role="region" tabindex="0" aria-label="樹氷パノラマコースの写真">
+        <figure class="shira-card"><img class="course-slide" src="images/web/juhyo-2-1600.webp" srcset="images/web/juhyo-2-960.webp 960w, images/web/juhyo-2-1600.webp 1600w" sizes="(max-width: 700px) 90vw, 600px" alt="樹氷の森を通る雪のコース" loading="lazy"><figcaption>樹氷の森を通るコース</figcaption></figure>
+        <figure class="shira-card"><img class="course-slide" src="images/web/juhyo-3-1600.webp" srcset="images/web/juhyo-3-960.webp 960w, images/web/juhyo-3-1600.webp 1600w" sizes="(max-width: 700px) 90vw, 600px" alt="雪をまとった木々の間に広がる山の景色" loading="lazy"><figcaption>木々の間から望む山並み</figcaption></figure>
+      </div>
+      <div class="course-copy">
+        <p class="course-label course-level"><span>INTERMEDIATE COURSE</span> <span>中級</span></p>
+        <h2 id="juhyo-title">樹氷パノラマコース</h2>
+        <p>樹氷の先に広がる、八沢の山並み。<br>景色と滑りを楽しみたい中級者向け。</p>
+        <dl class="course-facts">
+          <div><dt>長さ</dt><dd>1,500m</dd></div>
+          <div><dt>平均斜度</dt><dd>14度</dd></div>
+          <div><dt>雪面</dt><dd>圧雪あり</dd></div>
+          <div class="course-highlight"><dt>見どころ</dt><dd>樹氷の森と、途中から広がる八沢の山並み</dd></div>
+        </dl>
+      </div>
+    </section>
+    <section class="course course-secondary" id="skyline" aria-labelledby="skyline-title">
+      <div class="course-image course-gallery" role="region" tabindex="0" aria-label="八沢スカイラインコースの写真">
+        <figure class="shira-card"><img class="course-slide" src="images/web/skyline-course-1600.webp" srcset="images/web/skyline-course-960.webp 960w, images/web/skyline-course-1600.webp 1600w" sizes="(max-width: 700px) 90vw, 600px" alt="雪山を見渡す高い場所から続くゲレンデ" loading="lazy"><figcaption>圧雪の筋が続く斜面</figcaption></figure>
+        <figure class="shira-card"><img class="course-slide" src="images/skyline-action-candidate-v01.png" alt="山並みを背景にスキーヤーが雪を巻き上げながらターンする" loading="lazy"><figcaption>雪を巻き上げてターン</figcaption></figure>
+      </div>
+      <div class="course-copy">
+        <p class="course-label course-level"><span>ADVANCED COURSE</span> <span>上級</span></p>
+        <h2 id="skyline-title">八沢スカイライン<wbr><span style="white-space: nowrap">コース</span></h2>
+        <p>高い場所から山並みを望み、変化のある斜面へ。<br>ターンを楽しむ上級者向け。</p>
+        <dl class="course-facts">
+          <div><dt>長さ</dt><dd>2,200m</dd></div>
+          <div><dt>平均斜度</dt><dd>21度</dd></div>
+          <div><dt>雪面</dt><dd>一部圧雪</dd></div>
+          <div class="course-highlight"><dt>見どころ</dt><dd>空に近い稜線と、眼下に重なる八沢の山並み</dd></div>
+        </dl>
+      </div>
+    </section>
+    <section class="course course-secondary" id="extreme" aria-labelledby="extreme-title">
+      <div class="course-image course-gallery" role="region" tabindex="0" aria-label="八沢エクストリームコースの写真">
+        <figure class="shira-card"><img class="course-slide" src="images/web/extreme-2-1600.webp" srcset="images/web/extreme-2-960.webp 960w, images/web/extreme-2-1600.webp 1600w" sizes="(max-width: 700px) 90vw, 600px" alt="急な雪の斜面を上から見下ろす風景" loading="lazy"><figcaption>上から見下ろす急斜面</figcaption></figure>
+        <figure class="shira-card"><img class="course-slide" src="images/web/extreme-3-1600.webp" srcset="images/web/extreme-3-960.webp 960w, images/web/extreme-3-1600.webp 1600w" sizes="(max-width: 700px) 90vw, 600px" alt="風に形作られた急斜面と遠くの山並み" loading="lazy"><figcaption>風がつくる雪の斜面</figcaption></figure>
+      </div>
+      <div class="course-copy">
+        <p class="course-label">EXPERT COURSE · 超上級者向け</p>
+        <h2 id="extreme-title">八沢エクストリーム<wbr><span style="white-space: nowrap">コース</span></h2>
+        <p>山頂から急斜面を望む、挑戦のコース。<br>経験豊富な方に向けた、非圧雪の斜面。</p>
+        <dl class="course-facts">
+          <div><dt>長さ</dt><dd>1,200m</dd></div>
+          <div><dt>平均斜度</dt><dd>30度</dd></div>
+          <div><dt>雪面</dt><dd>非圧雪</dd></div>
+          <div class="course-highlight"><dt>見どころ</dt><dd>山頂の急斜面と、遠くに連なる八沢の山並み</dd></div>
+        </dl>
+      </div>
+    </section>
+    <nav class="section-shortcuts" aria-label="ページ内のご案内"><span>目的の情報へ</span><a href="#course-map">ゲレンデマップ</a><a href="#prices">料金</a><a href="#access">アクセス</a></nav>
+    <section class="resort-guide first-visit" id="first-visit" aria-labelledby="first-title">
+      <p class="course-label">FIRST VISIT</p>
+      <h2 id="first-title">初めての方へ</h2>
+      <p>雪の一日を楽しむために、まずはここから。</p>
+      <ol class="first-steps">
+        <li><h3>アクセスを確認</h3><p>電車・バス・車での行き方を確認。</p><a href="#access">アクセスを見る →</a></li>
+        <li><h3>道具とチケットを準備</h3><p>レンタルとリフト券の料金をチェック。</p><a href="#prices">料金を見る →</a></li>
+        <li><h3>ゆるやかなコースへ</h3><p>初めての方は、しらかばコースへ。</p><a href="#slopes">コースを見る →</a></li>
+      </ol>
+    </section>
+    <section class="prices" id="prices" aria-labelledby="prices-title">
+      <p class="course-label">PRICES</p>
+      <h2 id="prices-title">料金のご案内</h2>
+      <p>家族みんなで、雪の一日を楽しもう。</p>
+      <p class="prices-note">※ 架空のスキー場の料金設定です。</p>
+      <div class="price-section">
+        <h3>リフト券</h3>
+        <table class="price-table">
+          <caption>リフト券の料金</caption>
+          <thead><tr><th scope="col">券種</th><th scope="col">大人</th><th scope="col">子ども</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">1日券</th><td>4,800円</td><td>2,400円</td></tr>
+            <tr><th scope="row">半日券</th><td>3,200円</td><td>1,600円</td></tr>
+          </tbody>
+        </table>
+        <p><strong>ファミリー1日券　11,000円</strong><br>大人2人＋子ども1人。小学生なら通常より1,000円お得。</p>
+        <p class="prices-note">半日券の利用時間（架空）：午前 8:30〜12:30、午後 12:30〜16:30。</p>
+        <p class="prices-note">子ども料金は小学生以下。未就学児はリフト券を持つ保護者と一緒なら無料。</p>
+      </div>
+      <div class="price-section">
+        <h3>レンタル <span class="prices-subtitle">1日料金</span></h3>
+        <table class="price-table">
+          <caption>レンタルの1日料金</caption>
+          <thead><tr><th scope="col">レンタル</th><th scope="col">大人</th><th scope="col">子ども</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">スキーセット</th><td>4,000円</td><td>2,500円</td></tr>
+            <tr><th scope="row">スノーボードセット</th><td>4,000円</td><td>2,500円</td></tr>
+            <tr><th scope="row">ウェア上下</th><td>3,000円</td><td>2,000円</td></tr>
+            <tr><th scope="row">手ぶらセット</th><td>6,000円</td><td>3,800円</td></tr>
+          </tbody>
+        </table>
+        <p class="prices-note">スキーセット：板・ブーツ・ストック。スノーボードセット：板・ブーツ。<br>手ぶらセット：スキーまたはスノーボードセット＋ウェア上下。</p>
+        <p class="prices-note">子ども料金は小学生以下。グローブ・ゴーグルはセットに含まれません。</p>
+      </div>
+    </section>
+    <section class="facilities" id="facilities" aria-labelledby="facilities-title">
+      <p class="course-label">FACILITIES</p>
+      <h2 id="facilities-title">施設のご案内</h2>
+      <p>八沢で過ごす、あたたかなひととき。</p>
+      <div class="facilities-grid">
+        <article class="facility-card">
+          <img src="images/facility-restaurant-people-candidate-v02.png" alt="雪山を望むレストランで食事を楽しむ二人" loading="lazy">
+          <h3>レストラン「森のテラス」</h3>
+          <p>大きな窓から雪山を眺め、家族でゆっくり食事を。</p>
+        </article>
+        <article class="facility-card">
+          <img src="images/web/facility-kids-1600.webp" srcset="images/web/facility-kids-960.webp 960w, images/web/facility-kids-1600.webp 1600w" sizes="(max-width: 700px) 90vw, 600px" alt="おもちゃとマットが置かれたあたたかなキッズルーム" loading="lazy">
+          <h3>キッズルーム</h3>
+          <p>小さな子どもが遊べる、あたたかな室内の休憩場所です。</p>
+        </article>
+        <article class="facility-card">
+          <img src="images/web/facility-rental-1600.webp" srcset="images/web/facility-rental-960.webp 960w, images/web/facility-rental-1600.webp 1600w" sizes="(max-width: 700px) 90vw, 600px" alt="スキーやスノーボード、ウェアが並ぶレンタルショップ" loading="lazy">
+          <h3>レンタルショップ</h3>
+          <p>スキーやスノーボード、ウェアを借りられます。初めての雪山も身軽に楽しめます。</p><p><a href="#prices">料金を見る →</a></p>
+        </article>
+        <article class="facility-card">
+          <img src="images/web/facility-lounge-1600.webp" srcset="images/web/facility-lounge-960.webp 960w, images/web/facility-lounge-1600.webp 1600w" sizes="(max-width: 700px) 90vw, 600px" alt="雪山を眺めながらくつろげる椅子の並ぶラウンジ" loading="lazy">
+          <h3>休憩ラウンジ</h3>
+          <p>滑り疲れたら、雪景色を眺めながらゆっくりひと休み。</p>
+        </article>
+      </div>
+    </section>
+    <section class="access" id="access" aria-labelledby="access-title">
+      <p class="course-label">ACCESS</p>
+      <h2 id="access-title">アクセス</h2>
+      <p>電車・シャトルバス・お車でのアクセスをご案内します。</p>
+      <p class="access-note">※ 八沢スキー場と下記の駅・道路・交通手段は、すべて架空の設定です。</p>
+      <div class="access-grid">
+        <article>
+          <h3>電車とシャトルバス</h3>
+          <p>架空の「雪の森駅」から、スキー場までシャトルバスで約30分。</p>
+          <p>スキー場の営業期間中は毎日運行。</p>
+          <dl class="shuttle-times"><div><dt>駅発</dt><dd>7:30・8:30・9:30</dd></div><div><dt>スキー場発</dt><dd>14:30・15:30・16:30</dd></div></dl>
+          <p class="access-benefit">料金は無料、予約は不要です。</p>
+          <p>満席の場合は次の便をご利用ください。最終便が満席の場合は、ロッジの総合案内でタクシーの手配をご相談ください（運賃別途）。</p>
+        </article>
+        <article>
+          <h3>お車</h3>
+          <p>架空の「雪の森インターチェンジ」から、スキー場まで約25分。</p>
+          <p>駐車場は無料、収容台数は500台。スキー場の営業期間中にご利用いただけます。</p>
+        </article>
+      </div>
+    </section>
+    <section class="info" aria-label="スキー場のご案内">
+      <h2>八沢スキー場のご案内</h2>
+      <p>ゲレンデや料金、施設、アクセスをご案内します。</p>
+      <div class="info-grid">
+        <section><h3>ゲレンデ案内</h3><p><a href="#slopes">4つのコースを見る</a></p></section>
+        <section><h3>料金</h3><p><a href="#prices">リフト券・レンタル料金を見る</a></p></section>
+        <section><h3>施設</h3><p><a href="#facilities">施設のご案内を見る</a></p></section>
+        <section><h3>アクセス</h3><p><a href="#access">アクセスのご案内を見る</a></p></section>
+      </div>
+    </section>
+    <p class="note">架空のスキー場を題材にした学習作品です。コースの情報・料金は架空の設定で、画像はAIで生成したイメージです。<br><a href="project-notes-status-v04.html">この作品の紹介を見る</a></p>
+  </main>
+</body>
+</html>
