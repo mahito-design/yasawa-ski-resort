@@ -192,3 +192,16 @@ button:focus-visible { outline: 3px solid #315e80; outline-offset: 3px; }
 .photo-notes summary:focus-visible { outline: 3px solid #315e80; outline-offset: 3px; }
 .photo-notes ol { margin: 0 0 12px; padding-left: 1.5em; line-height: 1.8; }
 .note a { display: inline-block; padding: 10px 0; color: #315e80; }
+
+/* Sticky navigation comparison: preserve the existing menu and layout. */
+html { scroll-padding-top: 100px; }
+.site-header { position: sticky; top: 0; z-index: 20; }
+@media (max-width: 900px) {
+  #site-menu:not([hidden]) { max-height: calc(100vh - 110px); max-height: calc(100dvh - 110px); overflow-y: auto; overscroll-behavior: contain; }
+}
+/* Clarify the open state and align anchor sections beneath the header. */
+html { scroll-padding-top: 72px; }
+.menu-toggle { font-size: 0; }
+.menu-toggle span { font-size: 1rem; }
+.menu-toggle::before { content: '☰'; font-size: 1rem; }
+.menu-toggle[aria-expanded="true"]::before { content: '×'; font-size: 1.35rem; line-height: 1; }
